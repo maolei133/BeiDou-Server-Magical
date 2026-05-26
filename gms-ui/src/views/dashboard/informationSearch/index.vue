@@ -165,7 +165,8 @@
           >
             <template #cell="{ record }">
               <a-popover>
-                <a-button type="text" size="mini">
+                <a-button type="text" size="mini"
+                  @click="itemClick(record.type, record.id, record.name)">
                   {{ record.name }}
                 </a-button>
                 <template #content>
@@ -188,19 +189,15 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, computed } from 'vue';
-  import { useI18n } from 'vue-i18n';
-  import { Message } from '@arco-design/web-vue';
-  import useLoading from '@/hooks/loading';
-  import useEquipCategories from '@/hooks/useEquipCategories';
-  import { getIconUrl } from '@/utils/mapleStoryAPI';
-  import {
-    InformationSearch,
-    InformationResult,
-    informationSearch,
-  } from '@/api/information';
+import {computed, reactive, ref} from 'vue';
+import {useI18n} from 'vue-i18n';
+import {Message} from '@arco-design/web-vue';
+import useLoading from '@/hooks/loading';
+import useEquipCategories from '@/hooks/useEquipCategories';
+import {getIconUrl} from '@/utils/mapleStoryAPI';
+import {InformationResult, InformationSearch, informationSearch,} from '@/api/information';
 
-  const { t } = useI18n();
+const { t } = useI18n();
   const { loading, setLoading } = useLoading(false);
   const { categoryOptions, getSubCategoryOptions, loadCategories } =
     useEquipCategories();
@@ -471,6 +468,10 @@
         break;
     }
     return tag;
+  };
+
+  const itemClick = (type: string, itemId: number, itemName: string) => {
+    Message.success(`类型[${type}] ${itemName} (${itemId})`);
   };
 </script>
 
